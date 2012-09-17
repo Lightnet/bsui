@@ -1,0 +1,119 @@
+<!DOCTYPE html5>
+<html>
+    <head id="head">
+			<!-- note they have to be in order to able to get the variable load correctly -->
+            <script src="/socket.io/socket.io.js"></script><!-- load socket.io -->
+			<link rel="stylesheet" href="/css/jquery-ui.css">
+			<script src="/js/jquery.js"></script>
+			<script src="/js/jquery-ui.js"></script>
+			<link rel="stylesheet" href="/css/demos.css">
+			<script type="text/javascript">
+				var socket = io.connect(document.location.hostname);
+				
+				socket.on('connect',function() {
+					console.log('Client has connected to the server!8080');
+					socket.emit('log',{msg:"user connected"});
+				});
+				$(function() {
+					$( "#dialog:ui-dialog" ).dialog( "destroy" );
+					$( "#chatcontent" ).dialog();
+					$( "#lighton,#lightoff" ).button();
+				});
+				
+				socket.on('log',function() {
+					console.log('incoming server msg!');
+				});
+				
+				socket.on('page',function(data) {
+					console.log('incoming server msg!');
+				});
+				
+				function sendtest(){
+					socket.emit('log',{msg:"user send msg"});
+				}
+				
+				function pagemenu(_str){
+					console.log(_str);
+					socket.emit('page',{menu:_str});
+				}
+				
+				function typechatpress(e){
+					// look for window.event in case event isn't passed in
+					if (typeof e == 'undefined' && window.event) { e = window.event; }
+					if (e.keyCode == 13)
+					{
+						clickchat();
+						return false;
+					}
+				}
+				
+				function clickchat(){    
+					var messagetext = document.getElementById("chat_input").value;
+					console.log("text msg:"+messagetext);
+					socket.emit('chat',{message:messagetext});
+				}
+				
+				function fnlighton(){    
+					socket.emit('light',{set:'on'});
+				}
+				
+				function fnlightoff(){    
+					socket.emit('light',{set:'off'});
+					console.log('lightoff');
+				}
+				
+				function clickchat(){    
+					var messagetext = document.getElementById("chat_input").value;
+					console.log("text msg:"+messagetext);
+					socket.emit('chat',{message:messagetext});
+				}
+				
+				socket.on('chat', function(data) {
+					console.log(data);
+					if(data['message'] !=null){
+						chatbox(data['message']);	
+					}
+				});
+				
+				function chatbox(_text){
+					var chat_box = document.getElementById("chat_box");
+					var newdiv = document.createElement('div');
+					newdiv.innerHTML = _text;
+					chat_box.appendChild(newdiv);
+					chat_box.scrollTop = chat_box.scrollHeight;
+				}
+				
+				
+				$(function() {
+					$( "#radio" ).buttonset();
+				});
+				
+			</script>
+    </head>
+	
+    <body>
+		<div class="demo">
+			<div id="radio">
+				<input type="radio" id="radio1" name="radio" checked="checked" /><label for="radio1" onClick="pagemenu('home');" >Home</label>
+				<input type="radio" id="radio2" name="radio" /><label for="radio2" onClick="pagemenu('programs');" >Programs</label>
+				<input type="radio" id="radio3" name="radio" /><label for="radio3" onClick="pagemenu('scripts');" >Scripts</label>
+				<input type="radio" id="radio4" name="radio" /><label for="radio4" onClick="pagemenu('plugins');" >Plugins</label>
+				<input type="radio" id="radio5" name="radio" /><label for="radio5" onClick="$( '#chatcontent' ).dialog('open');" >Console</label>
+				<input type="radio" id="radio6" name="radio" /><label for="radio6" onClick="pagemenu('support');" >Support</label>
+			</div>
+		
+			<div id="usercontent">
+			<button id="lighton" onClick="fnlighton();">Light On</button>
+			<button id="lightoff" onClick="fnlightoff();">Light Off</button>
+			</div>
+			
+			<div id="chatcontent"  title="Console">
+				<div id="chat_frame"> 
+					<div id="chat_box" style="width:256px;height:155px;border:1px solid #ACD8F0;overflow: auto;"> </div>
+					<input id="chat_input" style="width:256px; border:1px solid #ACD8F0;" type="text" onkeypress="typechatpress(event);" />
+					<a id="chat_send" href="#" onClick="clickchat();">Send</a>
+				</div>
+			</div>
+		</div>
+    </body>
+</html>

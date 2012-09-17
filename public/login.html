@@ -1,0 +1,39 @@
+<link rel="stylesheet" href="/css/jquery-ui.css">
+<script src="/js/jquery.js"></script>
+<script src="/js/jquery-ui.js"></script>
+
+<link rel="stylesheet" href="/css/demos.css">
+<script>
+    $(function() {
+		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+	
+		$( "#dialog-confirm" ).dialog({
+			resizable: false,
+			height:140,
+			modal: true
+		});
+	});
+	</script>
+</head>
+<body>
+
+<div class="demo">
+
+<div id="dialog-confirm" title="Login Access">
+<form action="/login" method="post">
+<label>User:</label>
+<input type="text" name="username" value="guest"/>
+<br>
+<label>Pass:</label>
+<input type="text" name="userpass" value="guest" />
+<br>
+<input type="submit" value="Login" />
+<input type="submit" value="Forgot" />
+<input type="submit" value="Register" />
+<input type="hidden" value="login" name="action"/>
+</form>
+	
+	
+	</p>
+</div>

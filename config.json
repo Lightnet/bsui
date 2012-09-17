@@ -1,0 +1,21 @@
+{
+"database":
+	{
+	"host":"staff.mongohq.com",
+	"user":"guest",
+	"pass":"guest",
+	"port":"10034",
+	"name":"mmo",
+	"type":"mongo"
+	},
+  "port":"80",
+  "serverkey":"101010",
+  "servername":"sub server",
+  "servermtod":"welcome to the server",
+  "serverinfo":"this is under testing",
+  "serverinfo":"rpg",
+  "bclientbuild" : true,
+  "bautobuildscript": true
+  
+  
+}
